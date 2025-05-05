@@ -1400,7 +1400,9 @@ public:
    template <class Container>
    MDDCstrDesc::Ptr makeConstraintDescriptor(const Container& v,const char* n) {
       append(v);
-      return constraints.emplace_back(new MDDCstrDesc(v,n));
+      auto ptr = new MDDCstrDesc(v, n);
+      constraints.push_back(ptr);
+      return ptr;
    }
    MDDPBitSequence::Ptr downBSState(MDDCstrDesc::Ptr d,int nbb,unsigned char init,enum RelaxWith rw = External, int cPriority = 0, bool restrictedReducedInclude=true) override;
    MDDPBitSequence::Ptr upBSState(MDDCstrDesc::Ptr d,int nbb,unsigned char init,enum RelaxWith rw = External, int cPriority = 0) override;

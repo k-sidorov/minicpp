@@ -166,7 +166,7 @@ void MDDStateSpec::layout()
    _lszDown = lszBit >> 3;
    _lszDown = (_lszDown & 0x7) ? (_lszDown | 0x7)+1 : _lszDown;
    assert(_lszDown % 8 == 0); // # bytes is always a multiple of 8.
-   std::cout << "Down State requires:" << _lszDown << " bytes" << std::endl;
+   // std::cout << "Down State requires:" << _lszDown << " bytes" << std::endl;
 
    lszBit = 0;
    for(size_t p = 0;p <_nbpUp;p++) {
@@ -179,7 +179,7 @@ void MDDStateSpec::layout()
    _lszUp = lszBit >> 3;
    _lszUp = (_lszUp & 0x7) ? (_lszUp | 0x7)+1 : _lszUp;
    assert(_lszUp % 8 == 0); // # bytes is always a multiple of 8.
-   std::cout << "Up State requires:" << _lszUp << " bytes" << std::endl;
+   // std::cout << "Up State requires:" << _lszUp << " bytes" << std::endl;
 
    lszBit = 0;
    for(size_t p = 0;p <_nbpCombined;p++) {

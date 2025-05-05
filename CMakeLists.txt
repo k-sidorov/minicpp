@@ -50,6 +50,7 @@ add_library(copl
 	fz_parser/lexer.yy.cpp
 	fz_parser/parser.tab.cpp
 	fz_parser/registry.cpp
+	haddock.cpp
 	intvar.cpp
 	lex.cpp
 	mallocWatch.cpp
@@ -77,6 +78,7 @@ add_library(copl
         tracer.cpp
 	trail.cpp
 	trailable.cpp)
+set_target_properties(copl PROPERTIES PUBLIC_HEADER haddock.h)
 
 add_library(fzl
 		fz_constraints/bool_array.cpp

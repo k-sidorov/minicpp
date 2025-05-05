@@ -27,10 +27,23 @@ class MDDNode;
 class MDDEdge;
 class MDDNodeFactory;
 
+// HACK Custom types needed for library use of MDD
+
+typedef std::pair<unsigned int, unsigned int> MDDNodeRepr;
+
+struct MDDGraph {
+   std::vector<var<int>::Ptr> variables;
+   std::vector<std::tuple<MDDNodeRepr, MDDNodeRepr, int>> edges;
+   MDDNodeRepr sink;
+};
+
+typedef struct MDDGraph MDDGraph;
+
 class MDD  : public Constraint {
 public:
    typedef handle_ptr<MDD> Ptr;
    void saveGraph();
+   MDDGraph returnGraph();
    virtual void debugGraph() {}
    void post() override;
    void post(MDDCstrDesc::Ptr cDesc);

@@ -413,6 +413,32 @@ void MDD::saveGraph()
    }
 }
 
+// HACK Custom code to facilitate the C API
+MDDGraph MDD::returnGraph() {
+   MDDGraph result {
+      x,
+      { },
+      { sink->getLayer(), sink->getPosition() }
+   };
+
+   for(auto l = 0; l <= numVariables; l++){
+      for(auto i = 0u; i < layers[l].size(); i++){
+         if(!layers[l][i]->isActive()) continue;
+         auto n  = layers[l][i];
+         auto nc = layers[l][i]->getNumChildren();
+         const auto& ch = layers[l][i]->getChildren();
+         for(auto j = 0u; j < nc; j++){
+            int count = ch[j]->getChild()->getPosition();
+            MDDNodeRepr from { l, i };
+            MDDNodeRepr to { l + 1, count };
+            result.edges.emplace_back(from, to, ch[j]->getValue());
+         }
+      }
+   }
+
+   return result;
+}
+
 MDDStats::MDDStats(MDD::Ptr mdd) : _nbLayers((unsigned int)mdd->nbLayers()) {
    _width = std::make_pair (INT_MAX,0);
    _nbIEdges = std::make_pair (INT_MAX,0);

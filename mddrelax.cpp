@@ -58,7 +58,7 @@ MDDRelax::MDDRelax(CPSolver::Ptr cp,int width,int maxDistance,int maxSplitIter,b
 
 void MDDRelax::buildDiagram()
 {
-   std::cout << "MDDRelax::buildDiagram" << '\n';
+   // std::cout << "MDDRelax::buildDiagram" << '\n';
    _mddspec.layout();
    _mddspec.compile();
    _deltaDown = new MDDDelta(_mddspec,_nf,_mddspec.sizeDown(),Down);
