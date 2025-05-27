@@ -25,6 +25,7 @@ struct CMDDEdge {
 typedef struct CMDDEdge CMDDEdge;
 
 struct CMDDGraph {
+   bool success;
    HaddockVar** variables;
    int n_variables;
    CMDDEdge* edges;
@@ -38,8 +39,8 @@ Haddock* init_haddock();
 void release_haddock(Haddock*);
 HaddockVar* add_variable(Haddock*, int, int);
 
-void impose_linear(Haddock*, MDDHandle*, HaddockVar**, const int*, size_t, int, int);
-void impose_alldiff(Haddock*, MDDHandle*, HaddockVar**, size_t);
+bool impose_linear(Haddock*, MDDHandle*, HaddockVar**, const int*, size_t, int, int);
+bool impose_alldiff(Haddock*, MDDHandle*, HaddockVar**, size_t);
 
 MDDHandle* init_mdd(Haddock*, size_t);
 CMDDGraph post_mdd(Haddock*, MDDHandle*);

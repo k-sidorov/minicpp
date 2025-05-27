@@ -16,6 +16,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(USE_CXX_EXCEPTIONS "Enable C++ exception support" ON)
 
+if(USE_CXX_EXCEPTIONS)
+	add_compile_definitions(CPPFAIL)
+endif()
+
+
 set(CMAKE_CXX_FLAGS "-Wall -Wsign-compare")
 #if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 #   set(CMAKE_CXX_FLAGS_DEBUG "-g -msse4.2")

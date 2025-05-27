@@ -23,7 +23,7 @@ extern "C" {
         return reinterpret_cast<HaddockVar*>(var.get());
     }
 
-    void impose_linear(
+    bool impose_linear(
         Haddock* haddock_handle,
         MDDHandle* mdd_handle,
         HaddockVar** vars, const int* weights, size_t n_vars,
@@ -42,11 +42,16 @@ extern "C" {
         for (size_t index = 0; index < n_vars; ++index) {
             weights_vec.push_back(weights[index]);
         }
-        auto cons = Factory::sum(mdd, vars_vec, weights_vec, lb, ub);
-        mdd->post(cons);
+        try {
+            auto cons = Factory::sum(mdd, vars_vec, weights_vec, lb, ub);
+            mdd->post(cons);
+            return true;
+        } catch (...) {
+            return false;
+        }
     }
 
-    void impose_alldiff(
+    bool impose_alldiff(
         Haddock* haddock_handle,
         MDDHandle* mdd_handle,
         HaddockVar** vars, size_t n_vars) {
@@ -60,7 +65,12 @@ extern "C" {
                 return var<int>::Ptr(ptr);
             }
         );
-        mdd->post(Factory::allDiffMDD(vars_vec));
+        try {
+            mdd->post(Factory::allDiffMDD(vars_vec));
+            return true;
+        } catch (...) {
+            return false;
+        }
     }
 
     MDDHandle* init_mdd(Haddock* haddock_handle, size_t width) {
@@ -72,9 +82,14 @@ extern "C" {
     CMDDGraph post_mdd(Haddock* haddock_handle, MDDHandle* mdd_handle) {
         auto mdd = MDD::Ptr(reinterpret_cast<MDDRelax*>(mdd_handle));
         auto haddock = CPSolver::Ptr(reinterpret_cast<CPSolver*>(haddock_handle));
-        haddock->post(mdd);
-        auto g = mdd->returnGraph();
         CMDDGraph result {};
+        try {
+            haddock->post(mdd);
+            result.success = true;
+        } catch (...) {
+            result.success = false;
+        }
+        auto g = mdd->returnGraph();
         result.n_variables = g.variables.size();
         result.variables = reinterpret_cast<HaddockVar**>(
             malloc(result.n_variables * sizeof(HaddockVar*))
